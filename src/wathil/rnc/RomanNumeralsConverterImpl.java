@@ -13,14 +13,20 @@ public class RomanNumeralsConverterImpl implements RomanNumeralsConverter  {
     private Map numeralToRoman;
 
     public RomanNumeralsConverterImpl() {
-        numeralToRoman = new LinkedHashMap<Integer, Character>();
-        numeralToRoman.put(1000, 'M');
-        numeralToRoman.put(500, 'D');
-        numeralToRoman.put(100, 'C');
-        numeralToRoman.put(50, 'L');
-        numeralToRoman.put(10, 'X');
-        numeralToRoman.put(5, 'V');
-        numeralToRoman.put(1, 'I');
+        numeralToRoman = new LinkedHashMap<Integer, String>();
+        numeralToRoman.put(1000, "M");
+        numeralToRoman.put(900, "CM");
+        numeralToRoman.put(500, "D");
+        numeralToRoman.put(400, "CD");
+        numeralToRoman.put(100, "C");
+        numeralToRoman.put(90, "XC");
+        numeralToRoman.put(50, "L");
+        numeralToRoman.put(40, "XL");
+        numeralToRoman.put(10, "X");
+        numeralToRoman.put(9, "IX");
+        numeralToRoman.put(5, "V");
+        numeralToRoman.put(4, "IV");
+        numeralToRoman.put(1, "I");
     }
 
     @Override
