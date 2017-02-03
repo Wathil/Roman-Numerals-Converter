@@ -10,10 +10,15 @@ import java.util.Set;
  */
 public class RomanNumeralsConverterImpl implements RomanNumeralsConverter  {
 
+    private static RomanNumeralsConverter instance = new RomanNumeralsConverterImpl();
+    public static RomanNumeralsConverter getInstance() {
+        return instance;
+    }
+
     private Map numeralToRoman;
 
-    public RomanNumeralsConverterImpl() {
-        numeralToRoman = new LinkedHashMap<Integer, String>();
+    private RomanNumeralsConverterImpl() {
+        numeralToRoman = new LinkedHashMap<Integer, String>(13);
         numeralToRoman.put(1000, "M");
         numeralToRoman.put(900, "CM");
         numeralToRoman.put(500, "D");
@@ -30,29 +35,36 @@ public class RomanNumeralsConverterImpl implements RomanNumeralsConverter  {
     }
 
     @Override
-    public String convert(Integer i) {
-        StringBuilder sb = new StringBuilder();
+    public String convert(Integer numberToConvert) {
+        validate(numberToConvert);
 
-        Set<Integer> set = this.numeralToRoman.entrySet();
-        Iterator iterator = set.iterator();
+        StringBuilder resultSB = new StringBuilder();
+
+        Set<Integer> linkedHMEntrySet = this.numeralToRoman.entrySet();
+        Iterator iterator = linkedHMEntrySet.iterator();
 
         while (iterator.hasNext()) {
 
-            Map.Entry me = (Map.Entry) iterator.next();
+            Map.Entry mapEntry = (Map.Entry) iterator.next();
 
-            int n = (Integer) me.getKey();
+            int numberKey = (Integer) mapEntry.getKey();
 
-            while (i >= n) {
-                i = i - n;
-                sb.append(me.getValue());
+            while (numberToConvert >= numberKey) {
+                numberToConvert = numberToConvert - numberKey;
+                resultSB.append(mapEntry.getValue());
             }
 
-            if (i == 0) {
+            if (numberToConvert == 0) {
                 break;
             }
 
         }
 
-        return sb.toString();
+        return resultSB.toString();
+    }
+
+    private void validate(Integer numberToConvert) {
+        if (numberToConvert < MIN_VALUE || numberToConvert > MAX_VALUE)
+            throw new IllegalArgumentException(ERROR_MESSAGE);
     }
 }
