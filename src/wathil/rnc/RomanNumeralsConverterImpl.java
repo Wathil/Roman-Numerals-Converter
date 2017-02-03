@@ -8,16 +8,13 @@ import java.util.Set;
 /**
  * Created by yannick.garcia on 03/02/2017.
  */
-public class RomanNumeralsConverterImpl implements RomanNumeralsConverter  {
+public enum RomanNumeralsConverterImpl implements RomanNumeralsConverter  {
 
-    private static RomanNumeralsConverter instance = new RomanNumeralsConverterImpl();
-    public static RomanNumeralsConverter getInstance() {
-        return instance;
-    }
+    INSTANCE;
 
     private Map numeralToRoman;
 
-    private RomanNumeralsConverterImpl() {
+    RomanNumeralsConverterImpl() {
         numeralToRoman = new LinkedHashMap<Integer, String>(13);
         numeralToRoman.put(1000, "M");
         numeralToRoman.put(900, "CM");
@@ -35,7 +32,7 @@ public class RomanNumeralsConverterImpl implements RomanNumeralsConverter  {
     }
 
     @Override
-    public String convert(Integer numberToConvert) {
+    public String convert(final int numberToConvert) {
         validate(numberToConvert);
 
         StringBuilder resultSB = new StringBuilder();
@@ -43,27 +40,22 @@ public class RomanNumeralsConverterImpl implements RomanNumeralsConverter  {
         Set<Integer> linkedHMEntrySet = this.numeralToRoman.entrySet();
         Iterator iterator = linkedHMEntrySet.iterator();
 
-        while (iterator.hasNext()) {
-
+        int number = numberToConvert;
+        while (iterator.hasNext() && number > 0) {
             Map.Entry mapEntry = (Map.Entry) iterator.next();
 
             int numberKey = (Integer) mapEntry.getKey();
 
-            while (numberToConvert >= numberKey) {
-                numberToConvert = numberToConvert - numberKey;
+            while (number >= numberKey) {
+                number -= numberKey;
                 resultSB.append(mapEntry.getValue());
             }
-
-            if (numberToConvert == 0) {
-                break;
-            }
-
         }
 
         return resultSB.toString();
     }
 
-    private void validate(Integer numberToConvert) {
+    private void validate(final int numberToConvert) {
         if (numberToConvert < MIN_VALUE || numberToConvert > MAX_VALUE)
             throw new IllegalArgumentException(ERROR_MESSAGE);
     }
