@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Created by yannick.garcia on 03/02/2017.
@@ -12,7 +13,7 @@ public enum RomanNumeralsConverterImpl implements RomanNumeralsConverter  {
 
     INSTANCE;
 
-    private Map numeralToRoman;
+    private Map<Integer, String> numeralToRoman;
 
     RomanNumeralsConverterImpl() {
         numeralToRoman = new LinkedHashMap<Integer, String>(13);
@@ -33,15 +34,20 @@ public enum RomanNumeralsConverterImpl implements RomanNumeralsConverter  {
 
     @Override
     public String convert(final int numberToConvert) {
-        validate(numberToConvert);
+        if (numberToConvert < MIN_VALUE || numberToConvert > MAX_VALUE)
+            throw new IllegalArgumentException(ERROR_MESSAGE);
+        
+        return convert.apply(numberToConvert);
+    }
 
+    private Function<Integer, String> convert = (numberToConvert) -> {
         StringBuilder resultSB = new StringBuilder();
 
-        Set<Integer> linkedHMEntrySet = this.numeralToRoman.entrySet();
+        Set linkedHMEntrySet = this.numeralToRoman.entrySet();
         Iterator iterator = linkedHMEntrySet.iterator();
 
         int number = numberToConvert;
-        while (iterator.hasNext() && number > 0) {
+        while (number > 0) {
             Map.Entry mapEntry = (Map.Entry) iterator.next();
 
             int numberKey = (Integer) mapEntry.getKey();
@@ -53,10 +59,6 @@ public enum RomanNumeralsConverterImpl implements RomanNumeralsConverter  {
         }
 
         return resultSB.toString();
-    }
+    };
 
-    private void validate(final int numberToConvert) {
-        if (numberToConvert < MIN_VALUE || numberToConvert > MAX_VALUE)
-            throw new IllegalArgumentException(ERROR_MESSAGE);
-    }
 }
