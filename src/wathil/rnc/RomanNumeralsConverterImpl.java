@@ -1,9 +1,6 @@
 package wathil.rnc;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -13,38 +10,38 @@ public enum RomanNumeralsConverterImpl implements RomanNumeralsConverter  {
 
     INSTANCE;
 
-    private Map<Integer, String> numeralToRoman;
+    private Map<Integer, String> numeralToRomanMap;
 
     RomanNumeralsConverterImpl() {
-        numeralToRoman = new LinkedHashMap<Integer, String>(13);
-        numeralToRoman.put(1000, "M");
-        numeralToRoman.put(900, "CM");
-        numeralToRoman.put(500, "D");
-        numeralToRoman.put(400, "CD");
-        numeralToRoman.put(100, "C");
-        numeralToRoman.put(90, "XC");
-        numeralToRoman.put(50, "L");
-        numeralToRoman.put(40, "XL");
-        numeralToRoman.put(10, "X");
-        numeralToRoman.put(9, "IX");
-        numeralToRoman.put(5, "V");
-        numeralToRoman.put(4, "IV");
-        numeralToRoman.put(1, "I");
+        Map<Integer, String> map = new LinkedHashMap<>(13);
+        map.put(1000, "M");
+        map.put(900, "CM");
+        map.put(500, "D");
+        map.put(400, "CD");
+        map.put(100, "C");
+        map.put(90, "XC");
+        map.put(50, "L");
+        map.put(40, "XL");
+        map.put(10, "X");
+        map.put(9, "IX");
+        map.put(5, "V");
+        map.put(4, "IV");
+        map.put(1, "I");
+        this.numeralToRomanMap = Collections.unmodifiableMap(map);
     }
 
     @Override
     public String convert(final int numberToConvert) {
         if (numberToConvert < MIN_VALUE || numberToConvert > MAX_VALUE)
             throw new IllegalArgumentException(ERROR_MESSAGE);
-        
+
         return convert.apply(numberToConvert);
     }
 
     private Function<Integer, String> convert = (numberToConvert) -> {
         StringBuilder resultSB = new StringBuilder();
 
-        Set linkedHMEntrySet = this.numeralToRoman.entrySet();
-        Iterator iterator = linkedHMEntrySet.iterator();
+        Iterator iterator = numeralToRomanMap.entrySet().iterator();
 
         int number = numberToConvert;
         while (number > 0) {
