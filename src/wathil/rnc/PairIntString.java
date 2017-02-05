@@ -3,16 +3,12 @@ package wathil.rnc;
 /**
  * Created by yannickgarcia on 05/02/2017.
  */
-final class PairIntString {
-    final int intValue;
-    final String stringValue;
+final class Pair<U, V> {
+    final U uValue;
+    final V vValue;
 
-    private PairIntString(final int intValue, final String stringValue) {
-        this.intValue = intValue;
-        this.stringValue = stringValue;
-    }
-
-    static PairIntString of(final int intValue, final String stringValue) {
-        return new PairIntString(intValue, stringValue);
+    Pair(final U uValue, final V vValue) {
+        this.uValue = uValue;
+        this.vValue = vValue;
     }
 }

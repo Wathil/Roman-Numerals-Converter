@@ -9,5 +9,5 @@ public interface RomanNumeralsConverter<T, U> {
     int MAX_VALUE = 3999;
     String ERROR_MESSAGE = "it must be between " + MIN_VALUE + " and " + MAX_VALUE;
 
-    T convert(U u);
+    U convert(T t);
 }

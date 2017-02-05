@@ -5,27 +5,27 @@ import java.util.*;
 /**
  * Created by yannick.garcia on 03/02/2017.
  */
-public enum RomanNumeralsConverterImpl implements RomanNumeralsConverter<String, Integer>  {
+public enum RomanNumeralsConverterImpl implements RomanNumeralsConverter<Integer, String>  {
 
     INSTANCE;
 
-    private final List<PairIntString> numeralToRomanList;
+    private final List<Pair<Integer, String>> numeralToRomanList;
 
     RomanNumeralsConverterImpl() {
-        List<PairIntString> list = new ArrayList<>(13);
-        list.add(PairIntString.of(1000, "M"));
-        list.add(PairIntString.of(900, "CM"));
-        list.add(PairIntString.of(500, "D"));
-        list.add(PairIntString.of(400, "CD"));
-        list.add(PairIntString.of(100, "C"));
-        list.add(PairIntString.of(90, "XC"));
-        list.add(PairIntString.of(50, "L"));
-        list.add(PairIntString.of(40, "XL"));
-        list.add(PairIntString.of(10, "X"));
-        list.add(PairIntString.of(9, "IX"));
-        list.add(PairIntString.of(5, "V"));
-        list.add(PairIntString.of(4, "IV"));
-        list.add(PairIntString.of(1, "I"));
+        List<Pair<Integer, String>> list = new ArrayList<>(13);
+        list.add(new Pair<>(1000, "M"));
+        list.add(new Pair<>(900, "CM"));
+        list.add(new Pair<>(500, "D"));
+        list.add(new Pair<>(400, "CD"));
+        list.add(new Pair<>(100, "C"));
+        list.add(new Pair<>(90, "XC"));
+        list.add(new Pair<>(50, "L"));
+        list.add(new Pair<>(40, "XL"));
+        list.add(new Pair<>(10, "X"));
+        list.add(new Pair<>(9, "IX"));
+        list.add(new Pair<>(5, "V"));
+        list.add(new Pair<>(4, "IV"));
+        list.add(new Pair<>(1, "I"));
         this.numeralToRomanList = Collections.unmodifiableList(list);
     }
 
@@ -38,30 +38,30 @@ public enum RomanNumeralsConverterImpl implements RomanNumeralsConverter<String,
 
         final StringBuilder resultSB = new StringBuilder(15);
 
-        final Iterator<PairIntString> iterator = numeralToRomanList.iterator();
+        final Iterator<Pair<Integer, String>> iterator = numeralToRomanList.iterator();
 
         do {
-            PairIntString result = getPair(iterator.next(), numberToConvert);
+            Pair<Integer, String> result = getPair(iterator.next(), numberToConvert);
             numberToConvert = getRemainderAndAppend(resultSB, result, numberToConvert);
         } while (numberToConvert > 0);
 
         return resultSB.toString();
     }
 
-    private PairIntString getPair(final PairIntString couple, int mainRemainder) {
+    private Pair<Integer, String> getPair(final Pair<Integer, String> couple, int mainRemainder) {
         final StringBuilder smallSB = new StringBuilder(3);
 
         int remainder = mainRemainder;
-        while (remainder >= couple.intValue) {
+        while (remainder >= couple.uValue) {
             remainder = getRemainderAndAppend(smallSB, couple, remainder);
         }
 
-        return PairIntString.of(mainRemainder - remainder, smallSB.toString());
+        return new Pair<>(mainRemainder - remainder, smallSB.toString());
     }
 
-    private int getRemainderAndAppend(final StringBuilder resultSB, final PairIntString result, int remainder) {
-        resultSB.append(result.stringValue);
-        return remainder - result.intValue;
+    private int getRemainderAndAppend(final StringBuilder resultSB, final Pair<Integer, String> result, int remainder) {
+        resultSB.append(result.vValue);
+        return remainder - result.uValue;
     }
 
     public static void main(String[] args) {
